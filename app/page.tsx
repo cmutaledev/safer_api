@@ -8,6 +8,7 @@ import DotnumberForm from '@/components/dotnumber-form';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { extractData } from '@/server/getData';
 
 
 export default function page() {
@@ -90,8 +91,13 @@ if (loading) {
 //   return <div>Error: {error}</div>;
 // }
 
+{/* <button id="extractButton" onClick={extractData()}>Extract Data</button> */}
+
 return (
   <div className='p-4 space-y-4'>
+    {/* ############################ Dummy button ############################ */}
+    <button id="extractButton" onClick={extractData()}>Extract Data</button> 
+    {/* ############################ Dummy button ############################ */}
     <h1 className='text-2xl font-bold'>Vehicle Data</h1>
     {/* <DotnumberForm /> */}
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -112,6 +118,8 @@ return (
         </ul>
       </div>
     )}
+
+    
 
     {/*{JSON.stringify(vehicleData)} */}
     <DataTable columns={Columns} data={data} />
