@@ -1,33 +1,31 @@
-import React from 'react'
+"use client"
+
+import React, { useEffect, useState } from 'react'
 import { DataTable } from './data-table'
-import { Columns } from './columns'
+import { getVehicleData } from '@/server/getVehicleData';
+import { Columns } from './columns';
 
-const API_URL = 'https://mobile.fmcsa.dot.gov/qc/services/'
 
-async function getData(dotNumber: string) {
-  const response = await fetch(API_URL + `carriers/${dotNumber}?webKey=d92a939adbc307a4922cfea3ff902a62090af1dd`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  const data = await response.json()
-  // console.log(data)
-  return [data.content.carrier];
-}
+export default function page() {
+  const [data, setData] = useState<any[]>([]);
 
-export default async function page() {
-  const dotNumber = '44110'
-  const dotNumber2 = '1650820'
+  useEffect(() => {
+    const dotNumbers = ['44110', '1650820', '1655100'];
+    getVehicleData(dotNumbers)
+      .then(carriers => {
+        console.log('Fetched carriers:', carriers);
+        setData(carriers);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, [])
 
-  const vehicleData = await getData(dotNumber);
-  // console.log(vehicleData)
 
   return (
     <div>
-      {/* Page:
-      {JSON.stringify(vehicleData)} */}
-      <DataTable columns={Columns} data={vehicleData} />
+      {/*{JSON.stringify(vehicleData)} */}
+      <DataTable columns={Columns} data={data} />
     </div>
   )
 }
